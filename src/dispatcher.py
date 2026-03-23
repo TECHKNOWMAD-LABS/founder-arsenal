@@ -82,6 +82,8 @@ _SKILL_TRIGGERS: dict[SkillName, list[str]] = {
     SkillName.LEGAL: [
         "legal",
         "patent",
+        "patents",
+        "file patent",
         "trademark",
         "contract",
         "nda",
