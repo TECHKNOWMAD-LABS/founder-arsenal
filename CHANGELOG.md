@@ -6,6 +6,46 @@ Format: `## [version] — YYYY-MM-DD`
 
 ---
 
+## [0.1.0] — 2026-03-23
+
+### Cycle 1 — Test Coverage (0% → 96.55%)
+- Added Python package: `src/` with 9 modules (dispatcher, crisis, fundraising, talent, gtm, governance, ops, resilience, models)
+- 269 unit tests across 7 test files — all passing
+- 96.55% test coverage (min per-module: 90%)
+
+### Cycle 2 — Error Hardening
+- Added `src/utils.py`: retry_with_backoff (3 retries, exponential backoff), sanitize_string, sanitize_positive_float, truncate_for_processing
+- 41 new tests for error paths: None, empty, NaN, Inf, oversized inputs
+- All 310 tests passing after hardening
+
+### Cycle 3 — Performance
+- Added `src/parallel.py`: asyncio.gather + semaphore parallel batch engine
+- `batch_dispatch()`, `batch_assess_runway()` for concurrent multi-analysis
+- `time_sequential()` / `time_parallel()` for benchmarking
+- 23 new parallel tests
+
+### Cycle 4 — Security
+- Scanned all sources: 0 hardcoded secrets, 0 SQL injection, 0 path traversal
+- Added `.gitignore` with comprehensive exclusions (secrets, .env, __pycache__)
+- Added `.env.example` with API key template
+
+### Cycle 5 — CI/CD
+- Added `.github/workflows/ci.yml`: Python 3.12, ruff lint, pytest + coverage on every push/PR
+- Added `.pre-commit-config.yaml`: ruff, detect-private-key, no-commit-to-main hooks
+
+### Cycle 6 — Property-Based Testing
+- 20 Hypothesis property-based tests across 8 modules
+- Found and fixed 2 edge cases: factor overflow (>5.0), LTV:CAC rounding for small values
+- Properties verified: score ranges, monotonicity, formula consistency, no crashes
+
+### Cycle 7 — Examples + Docs
+- `examples/01_dispatch_founder_query.py` — intent routing demo
+- `examples/02_crisis_assessment.py` — crisis severity + runway assessment
+- `examples/03_founder_dashboard.py` — full startup health dashboard
+- All examples run end-to-end without errors
+
+---
+
 ## [1.0.0] — 2026-03-22
 
 ### Added
