@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Optional
+from enum import StrEnum
 
 
-class SkillName(str, Enum):
+class SkillName(StrEnum):
     """Enumeration of all available founder skills."""
 
     FUNDRAISING = "fundraising-command-center"
@@ -20,7 +19,7 @@ class SkillName(str, Enum):
     GOVERNANCE = "governance-compliance-shield"
 
 
-class CrisisSeverity(str, Enum):
+class CrisisSeverity(StrEnum):
     """Crisis severity levels."""
 
     WATCH = "WATCH"
@@ -30,7 +29,7 @@ class CrisisSeverity(str, Enum):
     BLACK = "BLACK"
 
 
-class CrisisType(str, Enum):
+class CrisisType(StrEnum):
     """The 14 crisis types that kill startups."""
 
     CASH_CRISIS = "cash_crisis"

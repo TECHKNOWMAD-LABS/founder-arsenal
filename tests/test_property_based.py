@@ -9,19 +9,17 @@ Tests that:
 
 from __future__ import annotations
 
-import math
 import pytest
-from hypothesis import given, assume, settings, HealthCheck
+from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
-from src.crisis import calculate_severity, assess_runway
-from src.fundraising import classify_stage, estimate_valuation
-from src.talent import generate_vesting_schedule, calculate_dilution
-from src.gtm import calculate_unit_economics, calculate_burn_multiple
-from src.resilience import assess_burnout
+from src.crisis import assess_runway, calculate_severity
 from src.dispatcher import dispatch
-from src.models import CrisisType, CrisisSeverity
-
+from src.fundraising import classify_stage, estimate_valuation
+from src.gtm import calculate_burn_multiple, calculate_unit_economics
+from src.models import CrisisSeverity, CrisisType
+from src.resilience import assess_burnout
+from src.talent import calculate_dilution, generate_vesting_schedule
 
 # ---------------------------------------------------------------------------
 # Strategies
@@ -31,12 +29,15 @@ factor_1_5 = st.floats(min_value=1.0, max_value=5.0, allow_nan=False, allow_infi
 positive_float = st.floats(min_value=0.001, max_value=1e12, allow_nan=False, allow_infinity=False)
 pct_0_100 = st.floats(min_value=0.0, max_value=100.0, allow_nan=False, allow_infinity=False)
 positive_int = st.integers(min_value=1, max_value=1_000_000)
-non_negative_arr = st.floats(min_value=0, max_value=200_000_000, allow_nan=False, allow_infinity=False)
+non_negative_arr = st.floats(
+    min_value=0, max_value=200_000_000, allow_nan=False, allow_infinity=False
+)
 
 
 # ---------------------------------------------------------------------------
 # Crisis module properties
 # ---------------------------------------------------------------------------
+
 
 class TestCrisisProperties:
     """Property-based tests for crisis module."""
@@ -91,14 +92,16 @@ class TestCrisisProperties:
         reputation=st.floats(min_value=1.0, max_value=4.5, allow_nan=False, allow_infinity=False),
         legal=st.floats(min_value=1.0, max_value=4.5, allow_nan=False, allow_infinity=False),
     )
-    def test_higher_factors_higher_score(
-        self, runway, revenue, team, reputation, legal
-    ):
+    def test_higher_factors_higher_score(self, runway, revenue, team, reputation, legal):
         """Increasing all factors by 0.5 must increase the severity score."""
         low = calculate_severity(CrisisType.CASH_CRISIS, runway, revenue, team, reputation, legal)
         high = calculate_severity(
             CrisisType.CASH_CRISIS,
-            runway + 0.5, revenue + 0.5, team + 0.5, reputation + 0.5, legal + 0.5
+            runway + 0.5,
+            revenue + 0.5,
+            team + 0.5,
+            reputation + 0.5,
+            legal + 0.5,
         )
         assert high.severity_score >= low.severity_score
 
@@ -125,6 +128,7 @@ class TestCrisisProperties:
 # ---------------------------------------------------------------------------
 # Fundraising module properties
 # ---------------------------------------------------------------------------
+
 
 class TestFundraisingProperties:
     """Property-based tests for fundraising module."""
@@ -173,6 +177,7 @@ class TestFundraisingProperties:
 # Talent module properties
 # ---------------------------------------------------------------------------
 
+
 class TestTalentProperties:
     """Property-based tests for talent module."""
 
@@ -187,8 +192,7 @@ class TestTalentProperties:
         result = generate_vesting_schedule(total, vesting, cliff)
         _, final_vested = result.schedule[-1]
         assert final_vested == total, (
-            f"Final vested {final_vested} != total {total} for "
-            f"vesting={vesting}, cliff={cliff}"
+            f"Final vested {final_vested} != total {total} for vesting={vesting}, cliff={cliff}"
         )
 
     @given(
@@ -203,7 +207,7 @@ class TestTalentProperties:
         vested_values = [v for _, v in result.schedule]
         for i in range(1, len(vested_values)):
             assert vested_values[i] >= vested_values[i - 1], (
-                f"Non-monotonic at month {i}: {vested_values[i-1]} > {vested_values[i]}"
+                f"Non-monotonic at month {i}: {vested_values[i - 1]} > {vested_values[i]}"
             )
 
     @given(
@@ -222,12 +226,15 @@ class TestTalentProperties:
     def test_dilution_adds_to_100(self, current, new):
         """Pre-ownership (100%) = post_ownership + dilution."""
         result = calculate_dilution(current, new)
-        assert (result["post_ownership_pct"] + result["dilution_pct"]) == pytest.approx(100.0, abs=0.01)
+        assert (result["post_ownership_pct"] + result["dilution_pct"]) == pytest.approx(
+            100.0, abs=0.01
+        )
 
 
 # ---------------------------------------------------------------------------
 # GTM module properties
 # ---------------------------------------------------------------------------
+
 
 class TestGTMProperties:
     """Property-based tests for GTM module."""
@@ -274,10 +281,17 @@ class TestGTMProperties:
 # Dispatcher properties
 # ---------------------------------------------------------------------------
 
+
 class TestDispatcherProperties:
     """Property-based tests for dispatcher."""
 
-    @given(msg=st.text(min_size=1, max_size=500, alphabet=st.characters(whitelist_categories=("Lu", "Ll", "Nd", "Zs"))))
+    @given(
+        msg=st.text(
+            min_size=1,
+            max_size=500,
+            alphabet=st.characters(whitelist_categories=("Lu", "Ll", "Nd", "Zs")),
+        )
+    )
     @settings(suppress_health_check=[HealthCheck.too_slow])
     def test_dispatch_never_crashes_on_valid_text(self, msg):
         """dispatch() must not crash on any non-empty string."""
@@ -301,6 +315,7 @@ class TestDispatcherProperties:
 # Resilience module properties
 # ---------------------------------------------------------------------------
 
+
 class TestResilienceProperties:
     """Property-based tests for resilience module."""
 
@@ -315,9 +330,7 @@ class TestResilienceProperties:
     def test_burnout_score_in_range(self, sleep, work, days_break, df, si, lm):
         """Burnout score must always be in [0, 100] for valid inputs."""
         result = assess_burnout(sleep, work, days_break, df, si, lm)
-        assert 0.0 <= result.score <= 100.0, (
-            f"Score {result.score} out of range"
-        )
+        assert 0.0 <= result.score <= 100.0, f"Score {result.score} out of range"
 
     @given(
         sleep=st.floats(min_value=0, max_value=12, allow_nan=False, allow_infinity=False),

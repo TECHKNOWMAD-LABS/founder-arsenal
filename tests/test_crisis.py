@@ -1,9 +1,8 @@
 """Tests for src/crisis.py — crisis severity scoring and runway assessment."""
 
-import math
 import pytest
 
-from src.crisis import calculate_severity, assess_runway
+from src.crisis import assess_runway, calculate_severity
 from src.models import (
     CrisisAssessment,
     CrisisSeverity,
@@ -111,10 +110,20 @@ class TestCalculateSeverity:
 
     def test_runway_has_highest_weight(self):
         """Runway impact (30%) should dominate vs other single factors (max 25%)."""
-        base = dict(runway_impact=1.0, revenue_impact=3.0, team_impact=3.0,
-                    reputation_impact=3.0, legal_impact=3.0)
-        high_runway = dict(runway_impact=5.0, revenue_impact=3.0, team_impact=3.0,
-                           reputation_impact=3.0, legal_impact=3.0)
+        base = dict(
+            runway_impact=1.0,
+            revenue_impact=3.0,
+            team_impact=3.0,
+            reputation_impact=3.0,
+            legal_impact=3.0,
+        )
+        high_runway = dict(
+            runway_impact=5.0,
+            revenue_impact=3.0,
+            team_impact=3.0,
+            reputation_impact=3.0,
+            legal_impact=3.0,
+        )
         low_runway = calculate_severity(CrisisType.CASH_CRISIS, **base)
         high_runway_result = calculate_severity(CrisisType.CASH_CRISIS, **high_runway)
         assert high_runway_result.severity_score > low_runway.severity_score

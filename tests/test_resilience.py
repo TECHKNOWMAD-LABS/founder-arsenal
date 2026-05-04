@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.resilience import assess_burnout, BurnoutAssessment
+from src.resilience import BurnoutAssessment, assess_burnout
 
 
 class TestAssessBurnout:

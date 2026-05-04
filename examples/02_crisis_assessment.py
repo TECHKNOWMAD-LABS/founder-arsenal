@@ -9,12 +9,12 @@ Run with:
     python3 examples/02_crisis_assessment.py
 """
 
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.crisis import calculate_severity, assess_runway
+from src.crisis import assess_runway, calculate_severity
 from src.models import CrisisType
 
 
@@ -29,11 +29,11 @@ def main() -> None:
     print("-" * 40)
     assessment = calculate_severity(
         crisis_type=CrisisType.CASH_CRISIS,
-        runway_impact=4.0,     # 2 months of runway → high impact
-        revenue_impact=3.0,    # Revenue at risk, but some cushion
-        team_impact=3.0,       # Team morale shaken
-        reputation_impact=2.0, # Not yet public
-        legal_impact=2.0,      # No legal issues yet
+        runway_impact=4.0,  # 2 months of runway → high impact
+        revenue_impact=3.0,  # Revenue at risk, but some cushion
+        team_impact=3.0,  # Team morale shaken
+        reputation_impact=2.0,  # Not yet public
+        legal_impact=2.0,  # No legal issues yet
     )
     print(f"Crisis Type:     {assessment.crisis_type.value}")
     print(f"Severity Score:  {assessment.severity_score}/10")
@@ -47,11 +47,11 @@ def main() -> None:
     print("-" * 40)
     breach = calculate_severity(
         crisis_type=CrisisType.DATA_BREACH,
-        runway_impact=2.0,      # Financial hit but not runway-threatening
-        revenue_impact=4.0,     # Customer churn risk is high
-        team_impact=3.0,        # Engineering team stressed
+        runway_impact=2.0,  # Financial hit but not runway-threatening
+        revenue_impact=4.0,  # Customer churn risk is high
+        team_impact=3.0,  # Engineering team stressed
         reputation_impact=5.0,  # Reputation severely damaged
-        legal_impact=5.0,       # GDPR/DPDP penalties, regulatory exposure
+        legal_impact=5.0,  # GDPR/DPDP penalties, regulatory exposure
     )
     print(f"Crisis Type:     {breach.crisis_type.value}")
     print(f"Severity Score:  {breach.severity_score}/10")

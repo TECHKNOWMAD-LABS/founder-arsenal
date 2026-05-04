@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import asyncio
 import time
-from typing import Any, Callable, Coroutine, Optional, TypeVar
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -17,7 +18,7 @@ T = TypeVar("T")
 DEFAULT_SEMAPHORE = 8
 
 
-async def run_with_semaphore(
+async def run_with_semaphore[T](
     semaphore: asyncio.Semaphore,
     func: Callable[..., T],
     *args: Any,
@@ -70,10 +71,7 @@ async def gather_analyses(
         raise ValueError(f"max_concurrency must be a positive int, got {max_concurrency}")
 
     semaphore = asyncio.Semaphore(max_concurrency)
-    coroutines = [
-        run_with_semaphore(semaphore, fn, *args, **kwargs)
-        for fn, args, kwargs in tasks
-    ]
+    coroutines = [run_with_semaphore(semaphore, fn, *args, **kwargs) for fn, args, kwargs in tasks]
     return list(await asyncio.gather(*coroutines))
 
 

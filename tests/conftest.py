@@ -4,12 +4,10 @@ Shared fixtures and mock helpers for Founder Arsenal tests.
 
 import pytest
 
-from src.models import CrisisType, SkillName
-
-
 # ---------------------------------------------------------------------------
 # Common data fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def sample_crisis_factors():

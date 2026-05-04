@@ -3,11 +3,11 @@
 import pytest
 
 from src.talent import (
+    ESOPPoolRecommendation,
+    VestingSchedule,
+    calculate_dilution,
     generate_vesting_schedule,
     get_esop_pool_recommendation,
-    calculate_dilution,
-    VestingSchedule,
-    ESOPPoolRecommendation,
 )
 
 

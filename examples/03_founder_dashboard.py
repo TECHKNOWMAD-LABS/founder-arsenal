@@ -9,38 +9,35 @@ Run with:
     python3 examples/03_founder_dashboard.py
 """
 
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+from src.crisis import assess_runway
 from src.fundraising import classify_stage, estimate_valuation
-from src.gtm import calculate_unit_economics, calculate_burn_multiple
-from src.talent import generate_vesting_schedule, get_esop_pool_recommendation
+from src.gtm import calculate_burn_multiple, calculate_unit_economics
 from src.ops import assess_operations_readiness
 from src.resilience import assess_burnout
-from src.crisis import assess_runway
-
+from src.talent import generate_vesting_schedule, get_esop_pool_recommendation
 
 # --------------------------------------------------------------------------
 # Startup profile (edit these to match your company)
 # --------------------------------------------------------------------------
 PROFILE = {
     # Company metrics
-    "arr_usd": 2_400_000,          # $2.4M ARR
-    "growth_rate_pct": 140.0,      # 140% YoY growth
-    "nrr_pct": 118.0,              # 118% Net Revenue Retention
-    "monthly_burn": 280_000,       # $280K/month burn
-    "cash_on_hand": 3_360_000,     # $3.36M cash (12 months runway)
-    "net_new_arr_qtly": 600_000,   # $600K new ARR this quarter
-    "net_burn_qtly": 840_000,      # $840K net burn this quarter
-
+    "arr_usd": 2_400_000,  # $2.4M ARR
+    "growth_rate_pct": 140.0,  # 140% YoY growth
+    "nrr_pct": 118.0,  # 118% Net Revenue Retention
+    "monthly_burn": 280_000,  # $280K/month burn
+    "cash_on_hand": 3_360_000,  # $3.36M cash (12 months runway)
+    "net_new_arr_qtly": 600_000,  # $600K new ARR this quarter
+    "net_burn_qtly": 840_000,  # $840K net burn this quarter
     # GTM metrics
-    "cac": 8_500,                  # $8,500 CAC
+    "cac": 8_500,  # $8,500 CAC
     "monthly_revenue_per_customer": 2_000,
     "gross_margin_pct": 72.0,
     "avg_customer_lifetime_months": 36,
-
     # KPIs
     "kpis": {
         "monthly_churn_pct": 1.8,
@@ -49,11 +46,9 @@ PROFILE = {
         "cac_payback_months": 16.0,
         "nrr_pct": 118.0,
     },
-
     # ESOP
     "total_shares": 10_000_000,
     "options_to_grant": 300_000,
-
     # Founder wellbeing
     "sleep_hours": 6.5,
     "work_hours_per_week": 68.0,
@@ -65,9 +60,9 @@ PROFILE = {
 
 
 def section(title: str) -> None:
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  {title}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
 
 def main() -> None:
@@ -137,7 +132,9 @@ def main() -> None:
         cliff_months=12,
     )
     print(f"  Stage:        {rec.stage}")
-    print(f"  Recommended pool: {rec.recommended_pool_pct:.0f}% ({rec.min_pool_pct:.0f}-{rec.max_pool_pct:.0f}%)")
+    print(
+        f"  Recommended pool: {rec.recommended_pool_pct:.0f}% ({rec.min_pool_pct:.0f}-{rec.max_pool_pct:.0f}%)"
+    )
     print(f"  Grant size:   {PROFILE['options_to_grant']:,} options")
     print(f"  Cliff vest:   {vest.cliff_vest:,} at month 12")
     print(f"  Monthly vest: {vest.monthly_vest_post_cliff:.0f}/month after cliff")

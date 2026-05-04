@@ -8,7 +8,6 @@ India-specific funding source recommendations.
 from __future__ import annotations
 
 import math
-from typing import Optional
 
 from .models import FundraisingStage
 
@@ -20,7 +19,11 @@ _STAGES: list[FundraisingStage] = [
         typical_raise=(100_000, 1_000_000),
         typical_valuation_multiple=0.0,  # Pre-revenue
         key_metrics=["founding team", "market size", "prototype/MVP"],
-        india_sources=["DPIIT recognition", "Startup India seed fund", "Angel networks (LetsVenture, AngelList India)"],
+        india_sources=[
+            "DPIIT recognition",
+            "Startup India seed fund",
+            "Angel networks (LetsVenture, AngelList India)",
+        ],
     ),
     FundraisingStage(
         stage="Seed",
@@ -28,7 +31,14 @@ _STAGES: list[FundraisingStage] = [
         typical_raise=(500_000, 3_000_000),
         typical_valuation_multiple=10.0,
         key_metrics=["MoM growth", "initial retention", "early PMF signals"],
-        india_sources=["Blume Ventures", "Chiratae", "Kalaari", "100X.VC", "Venture Catalysts", "DPIIT angel tax exemption"],
+        india_sources=[
+            "Blume Ventures",
+            "Chiratae",
+            "Kalaari",
+            "100X.VC",
+            "Venture Catalysts",
+            "DPIIT angel tax exemption",
+        ],
     ),
     FundraisingStage(
         stage="Series A",
@@ -36,7 +46,13 @@ _STAGES: list[FundraisingStage] = [
         typical_raise=(3_000_000, 15_000_000),
         typical_valuation_multiple=8.0,
         key_metrics=["ARR", "NRR", "CAC payback", "churn", "magic number"],
-        india_sources=["Sequoia India", "Accel India", "Matrix Partners India", "Nexus VP", "Elevation Capital"],
+        india_sources=[
+            "Sequoia India",
+            "Accel India",
+            "Matrix Partners India",
+            "Nexus VP",
+            "Elevation Capital",
+        ],
     ),
     FundraisingStage(
         stage="Series B",
@@ -44,15 +60,33 @@ _STAGES: list[FundraisingStage] = [
         typical_raise=(15_000_000, 50_000_000),
         typical_valuation_multiple=6.0,
         key_metrics=["Rule of 40", "gross margin", "payback period", "GRR", "expansion revenue"],
-        india_sources=["Tiger Global", "SoftBank Vision Fund", "Westbridge", "General Atlantic", "TA Associates"],
+        india_sources=[
+            "Tiger Global",
+            "SoftBank Vision Fund",
+            "Westbridge",
+            "General Atlantic",
+            "TA Associates",
+        ],
     ),
     FundraisingStage(
         stage="Series C+",
         typical_arr_range=(50_000_000, float("inf")),
         typical_raise=(50_000_000, 200_000_000),
         typical_valuation_multiple=5.0,
-        key_metrics=["market share", "profitability path", "unit economics", "international expansion"],
-        india_sources=["SoftBank", "Temasek", "GIC", "CPPIB", "Warburg Pincus", "public markets preparation"],
+        key_metrics=[
+            "market share",
+            "profitability path",
+            "unit economics",
+            "international expansion",
+        ],
+        india_sources=[
+            "SoftBank",
+            "Temasek",
+            "GIC",
+            "CPPIB",
+            "Warburg Pincus",
+            "public markets preparation",
+        ],
     ),
 ]
 
@@ -129,7 +163,9 @@ def estimate_valuation(
         raise ValueError(f"nrr_pct must be non-negative, got {nrr_pct}")
 
     stage = classify_stage(arr)
-    base_multiple = stage.typical_valuation_multiple if stage.typical_valuation_multiple > 0 else 5.0
+    base_multiple = (
+        stage.typical_valuation_multiple if stage.typical_valuation_multiple > 0 else 5.0
+    )
 
     # Growth adjustment: +1x multiple per 50% YoY growth above 100%
     growth_bonus = max(0.0, (growth_rate_pct - 100) / 50)

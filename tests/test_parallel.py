@@ -1,18 +1,17 @@
 """Tests for src/parallel.py — parallel batch processing."""
 
 import asyncio
-import pytest
-from unittest.mock import patch, MagicMock
 
-from src.parallel import (
-    gather_analyses,
-    batch_dispatch,
-    batch_assess_runway,
-    time_sequential,
-    time_parallel,
-    run_with_semaphore,
-)
+import pytest
+
 from src.models import SkillName
+from src.parallel import (
+    batch_assess_runway,
+    batch_dispatch,
+    gather_analyses,
+    time_parallel,
+    time_sequential,
+)
 
 
 class TestGatherAnalyses:
@@ -134,8 +133,8 @@ class TestBatchAssessRunway:
 
     def test_results_ordered(self):
         assessments = [
-            (2_000_000, 100_000),   # 20 months
-            (300_000, 100_000),     # 3 months
+            (2_000_000, 100_000),  # 20 months
+            (300_000, 100_000),  # 3 months
         ]
         results = batch_assess_runway(assessments)
         assert results[0].months_remaining > results[1].months_remaining

@@ -8,8 +8,7 @@ as described in skills/ops-scale-engine/SKILL.md.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 
 @dataclass
@@ -38,12 +37,22 @@ class OperationsReadiness:
 # Benchmark thresholds for common SaaS KPIs
 # Format: (kpi_name, benchmark, higher_is_better, warning_threshold_pct, critical_threshold_pct)
 _KPI_BENCHMARKS: dict[str, tuple[float, bool, float, float]] = {
-    "monthly_churn_pct": (2.0, False, 150.0, 250.0),    # Lower is better; warn at 3%, critical at 5%
-    "nps": (40.0, True, -50.0, -75.0),                   # Higher is better; warn at <20, critical at <10
-    "gross_margin_pct": (70.0, True, -15.0, -30.0),      # SaaS benchmark; warn at <60%, critical at <50%
-    "cac_payback_months": (18.0, False, 33.0, 67.0),     # Lower is better; warn at 24m, critical at 30m
-    "nrr_pct": (110.0, True, -9.0, -18.0),               # Warn at <100%, critical at <90%
-    "rule_of_40": (40.0, True, -50.0, -100.0),           # Warn at <20, critical at <0
+    "monthly_churn_pct": (2.0, False, 150.0, 250.0),  # Lower is better; warn at 3%, critical at 5%
+    "nps": (40.0, True, -50.0, -75.0),  # Higher is better; warn at <20, critical at <10
+    "gross_margin_pct": (
+        70.0,
+        True,
+        -15.0,
+        -30.0,
+    ),  # SaaS benchmark; warn at <60%, critical at <50%
+    "cac_payback_months": (
+        18.0,
+        False,
+        33.0,
+        67.0,
+    ),  # Lower is better; warn at 24m, critical at 30m
+    "nrr_pct": (110.0, True, -9.0, -18.0),  # Warn at <100%, critical at <90%
+    "rule_of_40": (40.0, True, -50.0, -100.0),  # Warn at <20, critical at <0
 }
 
 

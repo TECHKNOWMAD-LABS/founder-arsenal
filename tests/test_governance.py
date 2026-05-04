@@ -3,11 +3,11 @@
 import pytest
 
 from src.governance import (
-    score_soc2_readiness,
-    assess_board_readiness,
-    ComplianceScore,
     BoardReadiness,
     ComplianceFramework,
+    ComplianceScore,
+    assess_board_readiness,
+    score_soc2_readiness,
 )
 
 
@@ -18,9 +18,16 @@ class TestScoreSOC2Readiness:
 
     def test_all_complete(self):
         all_keys = [
-            "access_control", "encryption_at_rest", "encryption_in_transit",
-            "audit_logs", "incident_response", "vendor_management",
-            "penetration_test", "background_checks", "security_training", "change_management",
+            "access_control",
+            "encryption_at_rest",
+            "encryption_in_transit",
+            "audit_logs",
+            "incident_response",
+            "vendor_management",
+            "penetration_test",
+            "background_checks",
+            "security_training",
+            "change_management",
         ]
         result = score_soc2_readiness(all_keys)
         assert isinstance(result, ComplianceScore)
@@ -33,8 +40,13 @@ class TestScoreSOC2Readiness:
         assert len(result.gaps) == 10
 
     def test_half_complete(self):
-        half = ["access_control", "encryption_at_rest", "encryption_in_transit",
-                "audit_logs", "incident_response"]
+        half = [
+            "access_control",
+            "encryption_at_rest",
+            "encryption_in_transit",
+            "audit_logs",
+            "incident_response",
+        ]
         result = score_soc2_readiness(half)
         assert result.score == pytest.approx(50.0, abs=0.1)
 
@@ -95,8 +107,14 @@ class TestAssessBoardReadiness:
 
     def test_all_ready(self):
         all_keys = [
-            "board_pack_sent", "financials", "kpi_dashboard", "key_risks",
-            "major_decisions", "previous_actions", "cap_table", "legal_updates",
+            "board_pack_sent",
+            "financials",
+            "kpi_dashboard",
+            "key_risks",
+            "major_decisions",
+            "previous_actions",
+            "cap_table",
+            "legal_updates",
         ]
         result = assess_board_readiness(all_keys)
         assert isinstance(result, BoardReadiness)
@@ -112,8 +130,12 @@ class TestAssessBoardReadiness:
     def test_75_percent_threshold(self):
         # 6 out of 8 = 75% → ready
         six_keys = [
-            "board_pack_sent", "financials", "kpi_dashboard", "key_risks",
-            "major_decisions", "previous_actions",
+            "board_pack_sent",
+            "financials",
+            "kpi_dashboard",
+            "key_risks",
+            "major_decisions",
+            "previous_actions",
         ]
         result = assess_board_readiness(six_keys)
         assert result.score >= 75.0

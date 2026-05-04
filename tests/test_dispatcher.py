@@ -1,9 +1,8 @@
 """Tests for src/dispatcher.py — intent dispatcher."""
 
 import pytest
-from unittest.mock import patch, MagicMock
 
-from src.dispatcher import dispatch, _normalize, _score_skill
+from src.dispatcher import _normalize, _score_skill, dispatch
 from src.models import DispatchResult, SkillName
 
 
@@ -66,7 +65,9 @@ class TestScoreSkill:
         assert score_long >= score_short
 
     def test_returns_all_matched(self):
-        _, matched = _score_skill("series a raise with term sheet", ["series a", "term sheet", "vc"])
+        _, matched = _score_skill(
+            "series a raise with term sheet", ["series a", "term sheet", "vc"]
+        )
         assert "series a" in matched
         assert "term sheet" in matched
         assert "vc" not in matched
