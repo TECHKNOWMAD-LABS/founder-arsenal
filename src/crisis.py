@@ -8,7 +8,6 @@ described in skills/crisis-war-room/SKILL.md.
 from __future__ import annotations
 
 import math
-from typing import Optional
 
 from .models import (
     CrisisAssessment,
@@ -146,9 +145,7 @@ def calculate_severity(
         ValueError: If any factor is outside 1-5 range.
     """
     if not isinstance(crisis_type, CrisisType):
-        raise TypeError(
-            f"crisis_type must be a CrisisType, got {type(crisis_type).__name__}"
-        )
+        raise TypeError(f"crisis_type must be a CrisisType, got {type(crisis_type).__name__}")
 
     ri = _validate_factor(runway_impact, "runway_impact")
     rev = _validate_factor(revenue_impact, "revenue_impact")
@@ -156,7 +153,7 @@ def calculate_severity(
     rep = _validate_factor(reputation_impact, "reputation_impact")
     li = _validate_factor(legal_impact, "legal_impact")
 
-    weighted_avg = (ri * 0.30 + rev * 0.25 + ti * 0.15 + rep * 0.15 + li * 0.15)
+    weighted_avg = ri * 0.30 + rev * 0.25 + ti * 0.15 + rep * 0.15 + li * 0.15
     score = round(weighted_avg * 2, 2)  # Scale to 1-10
 
     # Determine severity level

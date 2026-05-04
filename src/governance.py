@@ -6,12 +6,11 @@ Provides compliance scoring and board readiness assessments.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import Optional
+from dataclasses import dataclass
+from enum import StrEnum
 
 
-class ComplianceFramework(str, Enum):
+class ComplianceFramework(StrEnum):
     """Supported compliance frameworks."""
 
     SOC2_TYPE1 = "SOC2 Type I"
@@ -87,7 +86,7 @@ def score_soc2_readiness(completed_items: list[str]) -> ComplianceScore:
         raise TypeError(f"completed_items must be a list, got {type(completed_items).__name__}")
 
     completed_set = {str(item).lower().strip() for item in completed_items}
-    all_keys = {key for key, _ in _SOC2_CHECKLIST}
+    {key for key, _ in _SOC2_CHECKLIST}
     gaps = []
     quick_wins = []
 

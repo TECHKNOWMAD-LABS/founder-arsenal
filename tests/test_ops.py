@@ -3,10 +3,10 @@
 import pytest
 
 from src.ops import (
-    check_kpi_health,
-    assess_operations_readiness,
     KPIHealth,
     OperationsReadiness,
+    assess_operations_readiness,
+    check_kpi_health,
 )
 
 
@@ -131,7 +131,7 @@ class TestAssessOperationsReadiness:
     def test_mixed_health(self):
         mixed = {
             "monthly_churn_pct": 1.0,  # healthy
-            "nrr_pct": 85.0,           # critical/warning
+            "nrr_pct": 85.0,  # critical/warning
         }
         result = assess_operations_readiness(mixed)
         assert len(result.healthy_kpis) >= 1

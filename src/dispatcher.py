@@ -9,8 +9,6 @@ chaining.
 from __future__ import annotations
 
 import re
-import time
-from typing import Optional
 
 from .models import DispatchResult, SkillName
 
@@ -287,7 +285,7 @@ def dispatch(
     *,
     max_secondary: int = 2,
     min_confidence: float = 0.0,
-) -> Optional[DispatchResult]:
+) -> DispatchResult | None:
     """
     Dispatch a natural-language founder message to the appropriate skill(s).
 

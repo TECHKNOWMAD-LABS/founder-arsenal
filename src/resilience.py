@@ -8,8 +8,7 @@ as described in skills/founder-resilience/SKILL.md.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 
 @dataclass
@@ -110,11 +109,11 @@ def assess_burnout(
         ValueError: If scores are outside valid ranges.
     """
     if not isinstance(sleep_hours_per_night, (int, float)):
-        raise TypeError(f"sleep_hours_per_night must be a number")
+        raise TypeError("sleep_hours_per_night must be a number")
     if not isinstance(work_hours_per_week, (int, float)):
-        raise TypeError(f"work_hours_per_week must be a number")
+        raise TypeError("work_hours_per_week must be a number")
     if not isinstance(days_since_last_break, (int, float)):
-        raise TypeError(f"days_since_last_break must be a number")
+        raise TypeError("days_since_last_break must be a number")
     if not math.isfinite(sleep_hours_per_night):
         raise ValueError("sleep_hours_per_night must be finite")
     if not math.isfinite(work_hours_per_week):
@@ -124,9 +123,9 @@ def assess_burnout(
     if sleep_hours_per_night < 0 or sleep_hours_per_night > 24:
         raise ValueError(f"sleep_hours_per_night must be 0-24, got {sleep_hours_per_night}")
     if work_hours_per_week < 0:
-        raise ValueError(f"work_hours_per_week must be non-negative")
+        raise ValueError("work_hours_per_week must be non-negative")
     if days_since_last_break < 0:
-        raise ValueError(f"days_since_last_break must be non-negative")
+        raise ValueError("days_since_last_break must be non-negative")
 
     df = _validate_score_1_10(decision_fatigue_score, "decision_fatigue_score")
     si = _validate_score_1_10(social_isolation_score, "social_isolation_score")

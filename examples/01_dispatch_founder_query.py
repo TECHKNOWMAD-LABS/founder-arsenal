@@ -9,8 +9,8 @@ Run with:
     python3 examples/01_dispatch_founder_query.py
 """
 
-import sys
 import os
+import sys
 
 # Allow running from repo root without installing the package
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))

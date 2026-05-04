@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -83,7 +82,9 @@ def calculate_unit_economics(
     cac = _validate_positive_float(cac, "cac")
     mrpc = _validate_positive_float(monthly_revenue_per_customer, "monthly_revenue_per_customer")
     gm = _validate_pct(gross_margin_pct, "gross_margin_pct")
-    lifetime = _validate_positive_float(avg_customer_lifetime_months, "avg_customer_lifetime_months")
+    lifetime = _validate_positive_float(
+        avg_customer_lifetime_months, "avg_customer_lifetime_months"
+    )
 
     monthly_gross_profit = mrpc * (gm / 100)
     ltv = monthly_gross_profit * lifetime

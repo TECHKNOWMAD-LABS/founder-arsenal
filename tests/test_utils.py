@@ -1,14 +1,12 @@
 """Tests for src/utils.py — shared utilities."""
 
-import time
 import pytest
-from unittest.mock import patch
 
 from src.utils import (
     retry_with_backoff,
-    sanitize_string,
-    sanitize_positive_float,
     sanitize_non_negative_float,
+    sanitize_positive_float,
+    sanitize_string,
     truncate_for_processing,
 )
 
